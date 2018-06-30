@@ -1,18 +1,26 @@
 package jp.co.softbank.aal.domain;
 
+import jp.co.softbank.aal.integration.RecipeEntity;
+import jp.co.softbank.aal.integration.RecipesDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 /**
  * {@link RecipesManagementService} の実装を提供する具象クラスです。
  */
 @Service
 public class RecipesManagementServiceImpl implements RecipesManagementService {
-
+    
+    @Autowired
+    RecipesDao dao;
+    
     /**
      * {@inheritDoc}
      */
     @Override
     public Recipe getRecipe(int id) {
-        return new Recipe("チキンカレー", "45分", "4人", "玉ねぎ,肉,スパイス", 1000);
+        RecipeEntity entity = dao.find(id);
+        return entity.createDomain();
     }
 }

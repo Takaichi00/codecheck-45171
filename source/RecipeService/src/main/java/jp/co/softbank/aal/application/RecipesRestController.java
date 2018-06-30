@@ -9,7 +9,6 @@ import jp.co.softbank.aal.domain.RecipesManagementService;
 
 import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,7 +35,9 @@ public class RecipesRestController {
                     value = "{id}")
     public GetRecipeResponsePayload getRecipe(@PathVariable("id") String id) {
         Recipe recipe = service.getRecipe(NumberUtils.toInt(id));
-        return new GetRecipeResponsePayload(GET_RECIPE_OK, new RecipePayload(recipe));
+        RecipePayload recipePayload = new RecipePayload(recipe);
+        recipePayload.setId(null);
+        return new GetRecipeResponsePayload(GET_RECIPE_OK, recipePayload);
     }
     
 }

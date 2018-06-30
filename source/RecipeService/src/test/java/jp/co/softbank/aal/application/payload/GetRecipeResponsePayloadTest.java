@@ -30,7 +30,7 @@ public class GetRecipeResponsePayloadTest {
         
         GetRecipeResponsePayload payload = new GetRecipeResponsePayload();
         payload.setMessage("Recipe details by id");
-        payload.setRecipe(Arrays.asList(new RecipePayload("チキンカレー", "45分", "4人", "玉ねぎ,肉,スパイス", "1000")));
+        payload.setRecipe(Arrays.asList(new RecipePayload(null, "チキンカレー", "45分", "4人", "玉ねぎ,肉,スパイス", "1000")));
         
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);

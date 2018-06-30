@@ -1,5 +1,6 @@
 package jp.co.softbank.aal.application.payload;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jp.co.softbank.aal.domain.Recipe;
@@ -13,8 +14,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@JsonPropertyOrder({"title", "making_time", "serves", "ingredients", "cost"})
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({"id", "title", "making_time", "serves", "ingredients", "cost"})
 public class RecipePayload {
+    
+    private String id;
     
     private String title;
     
@@ -31,7 +35,8 @@ public class RecipePayload {
      * このペイロードの内容から {@link Recipe} クラスのインスタンスを作成します。
      */
     public RecipePayload(Recipe recipe) {
-        this(recipe.getTitle(),
+        this(Integer.toString(recipe.getId()),
+             recipe.getTitle(),
              recipe.getMakingTime(),
              recipe.getServes(),
              recipe.getIngredients(),

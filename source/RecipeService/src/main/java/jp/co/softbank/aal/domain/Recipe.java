@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class Recipe {
+    private int id;
     private String title;
     private String makingTime;
     private String serves;

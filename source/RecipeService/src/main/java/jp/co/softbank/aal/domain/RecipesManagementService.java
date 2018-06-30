@@ -1,7 +1,7 @@
 package jp.co.softbank.aal.domain;
 
 /**
- * レシピの管理を司るドメインクラスです。
+ * レシピの管理を司るドメインのインタフェースです。
  */
 public interface RecipesManagementService {
 
