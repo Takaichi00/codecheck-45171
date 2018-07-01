@@ -1,6 +1,7 @@
 package jp.co.softbank.aal.integration;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import jp.co.softbank.aal.common.SystemException;
@@ -31,17 +32,17 @@ public class RecipesDaoImpl implements RecipesDao {
         RecipeEntity result = null;
         
         try {
-            Map<String, Object> map
+            Map<String, Object> record
                 = jdbcTemplate.queryForMap("select * from recipes where id = ?", id);
             
-            result = new RecipeEntity(((Integer) map.get("ID")).intValue(),
-                                       (String) map.get("TITLE"),
-                                       (String) map.get("MAKING_TIME"),
-                                       (String) map.get("SERVES"),
-                                       (String) map.get("INGREDIENTS"),
-                                       ((Integer) map.get("COST")).intValue(),
-                                       (Timestamp) map.get("CREATED_AT"),
-                                       (Timestamp) map.get("UPDATED_AT"));
+            result = new RecipeEntity(((Integer) record.get("ID")).intValue(),
+                                      (String) record.get("TITLE"),
+                                      (String) record.get("MAKING_TIME"),
+                                      (String) record.get("SERVES"),
+                                      (String) record.get("INGREDIENTS"),
+                                      ((Integer) record.get("COST")).intValue(),
+                                      (Timestamp) record.get("CREATED_AT"),
+                                      (Timestamp) record.get("UPDATED_AT"));
             
         } catch (EmptyResultDataAccessException e) {
             LOG.info("recipe (id={}) is not found.", id);
@@ -60,8 +61,29 @@ public class RecipesDaoImpl implements RecipesDao {
      */
     @Override
     public List<RecipeEntity> findAll() {
-        // TODO Auto-generated method stub
-        return null;
+        List<RecipeEntity> result = new ArrayList<>();
+        
+        try {
+            List<Map<String, Object>> records = jdbcTemplate.queryForList("select * from recipes");
+            
+            for (Map<String, Object> record : records) {
+                result.add(new RecipeEntity(((Integer) record.get("ID")).intValue(),
+                                            (String) record.get("TITLE"),
+                                            (String) record.get("MAKING_TIME"),
+                                            (String) record.get("SERVES"),
+                                            (String) record.get("INGREDIENTS"),
+                                            ((Integer) record.get("COST")).intValue(),
+                                            (Timestamp) record.get("CREATED_AT"),
+                                            (Timestamp) record.get("UPDATED_AT")));
+            }
+        
+        } catch (DataAccessException e) {
+            LOG.error("database access error is occurred.", e);
+            throw new SystemException("database access error is occurred.", e);
+            
+        }
+        
+        return result;
     }
     
 }

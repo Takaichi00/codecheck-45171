@@ -21,6 +21,8 @@ public interface RecipesManagementService {
     /**
      * レシピ REST API サービスにおける、全レシピの一覧を返します。
      * 
+     * <p>サービスに１件もレシピが登録されていない場合、空のリストを返します。
+     * 
      * @return 全レシピの一覧のリスト
      */
     List<Recipe> getRecipes();
