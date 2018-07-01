@@ -32,20 +32,14 @@ public class RecipesRestController {
     RecipesManagementService service;
     
     /**
-     * 全レシピ一覧を返すエンドポイント。
+     * 全レシピの一覧を返すエンドポイント。
      * 
-     * @return 全レシピ一覧のペイロード
+     * @return 全レシピの一覧のペイロード
      */
     @RequestMapping(method = RequestMethod.GET)
     public GetRecipesResponsePayload getRecipes() {
-        GetRecipesResponsePayload result = new GetRecipesResponsePayload();
-        List<RecipePayload> recipes = Arrays.asList(
-            new RecipePayload(Integer.valueOf(1), "チキンカレー", "45分", "4人", "玉ねぎ,肉,スパイス", "1000"),
-            new RecipePayload(Integer.valueOf(2), "オムライス", "30分", "2人", "玉ねぎ,卵,スパイス,醤油", "700")
-        );
-        result.setRecipes(recipes);
-        
-        return result;
+        List<Recipe> recipes = service.getRecipes();
+        return GetRecipesResponsePayload.createInstance(recipes);
     }
     
     /**
@@ -69,7 +63,7 @@ public class RecipesRestController {
             throw new NotFoundException(RECIPE_NOT_FOUND);
         }
         
-        RecipePayload recipePayload = new RecipePayload(recipe);
+        RecipePayload recipePayload = RecipePayload.createInstance(recipe);
         recipePayload.setId(null);
         return new GetRecipeResponsePayload(GET_RECIPE_OK, recipePayload);
     }

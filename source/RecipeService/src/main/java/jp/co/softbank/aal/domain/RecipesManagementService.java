@@ -1,5 +1,7 @@
 package jp.co.softbank.aal.domain;
 
+import java.util.List;
+
 /**
  * レシピの管理を司るドメインのインタフェースです。
  */
@@ -16,4 +18,10 @@ public interface RecipesManagementService {
      */
     Recipe getRecipe(int id);
     
+    /**
+     * レシピ REST API サービスにおける、全レシピの一覧を返します。
+     * 
+     * @return 全レシピの一覧のリスト
+     */
+    List<Recipe> getRecipes();
 }

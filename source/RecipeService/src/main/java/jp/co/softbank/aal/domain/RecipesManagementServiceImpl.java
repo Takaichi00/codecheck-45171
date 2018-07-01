@@ -1,5 +1,6 @@
 package jp.co.softbank.aal.domain;
 
+import java.util.List;
 import jp.co.softbank.aal.integration.RecipeEntity;
 import jp.co.softbank.aal.integration.RecipesDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,15 @@ public class RecipesManagementServiceImpl implements RecipesManagementService {
         }
         
         return entity.createDomain();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Recipe> getRecipes() {
+        // TODO Auto-generated method stub
+        return null;
     }
     
 }

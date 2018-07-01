@@ -97,6 +97,11 @@ public class RecipesRestControllerTest {
     
     @Test
     public void test_全レシピ一覧を正常に返せる場合() throws Exception {
+        when(service.getRecipes()).thenReturn(Arrays.asList(
+                new Recipe(1, "チキンカレー", "45分", "4人", "玉ねぎ,肉,スパイス", 1000),
+                new Recipe(2, "オムライス", "30分", "2人", "玉ねぎ,卵,スパイス,醤油", 700)
+                ));
+        
         GetRecipesResponsePayload expected = new GetRecipesResponsePayload();
         List<RecipePayload> recipes = Arrays.asList(
             new RecipePayload(Integer.valueOf(1), "チキンカレー", "45分", "4人", "玉ねぎ,肉,スパイス", "1000"),

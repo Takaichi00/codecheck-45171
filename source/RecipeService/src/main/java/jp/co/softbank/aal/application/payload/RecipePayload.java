@@ -32,15 +32,19 @@ public class RecipePayload {
     private String cost;
     
     /**
-     * このペイロードの内容から {@link Recipe} クラスのインスタンスを作成します。
+     * {@link Recipe} クラスのインスタンスから、このペイロードのインスタンスを構築して、返します。
+     * 
+     * @param recipe ドメインの {@link Recipe} クラスのインスタンス
+     * @return このペイロードのインスタンス
      */
-    public RecipePayload(Recipe recipe) {
-        this(Integer.valueOf((recipe.getId())),
-             recipe.getTitle(),
-             recipe.getMakingTime(),
-             recipe.getServes(),
-             recipe.getIngredients(),
-             Integer.toString(recipe.getCost()));
+    public static RecipePayload createInstance(Recipe recipe) {
+        RecipePayload result = new RecipePayload(Integer.valueOf(recipe.getId()),
+                                                 recipe.getTitle(),
+                                                 recipe.getMakingTime(),
+                                                 recipe.getServes(),
+                                                 recipe.getIngredients(),
+                                                 Integer.toString(recipe.getCost()));
+        return result;
     }
     
 }
