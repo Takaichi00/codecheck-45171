@@ -33,6 +33,7 @@ public class GetRecipeResponsePayloadTest {
                                                           "1000")));
         
         String actual = marshall(payload);
+        System.out.println(actual);
         assertThat(actual, is(expected));
     }
 

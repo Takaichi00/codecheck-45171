@@ -4,6 +4,9 @@ import static jp.co.softbank.aal.common.Messages.GET_RECIPE_OK;
 import static jp.co.softbank.aal.common.Messages.RECIPE_NOT_FOUND;
 
 import java.util.List;
+
+import jp.co.softbank.aal.application.payload.CreateRecipeRequestPayload;
+import jp.co.softbank.aal.application.payload.CreateRecipeResponsePayload;
 import jp.co.softbank.aal.application.payload.GetRecipeResponsePayload;
 import jp.co.softbank.aal.application.payload.GetRecipesResponsePayload;
 import jp.co.softbank.aal.application.payload.InternalServerException;
@@ -14,7 +17,9 @@ import jp.co.softbank.aal.domain.Recipe;
 import jp.co.softbank.aal.domain.RecipesManagementService;
 import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +33,26 @@ public class RecipesRestController {
     
     @Autowired
     RecipesManagementService service;
+    
+    /**
+     * レシピを作成するエンドポイント。
+     * 
+     * @param request 作成するレシピのペイロード
+     * @return 作成結果のペイロード
+     */
+    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public CreateRecipeResponsePayload createRecipe(@RequestBody CreateRecipeRequestPayload request) {
+        CreateRecipeResponsePayload result
+            = new CreateRecipeResponsePayload("Recipe successfully created!",
+                                              new RecipePayload(null,
+                                                                "トマトスープ",
+                                                                "15分",
+                                                                "5人",
+                                                                "玉ねぎ, トマト, スパイス, 水",
+                                                                "450"));
+        
+        return result;
+    }
     
     /**
      * 全レシピの一覧を返すエンドポイント。

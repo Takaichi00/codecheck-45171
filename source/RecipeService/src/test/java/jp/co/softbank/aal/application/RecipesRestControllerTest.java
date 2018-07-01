@@ -12,6 +12,8 @@ import java.util.List;
 import jp.co.softbank.aal.application.payload.ErrorResponse;
 import jp.co.softbank.aal.application.payload.GetRecipeResponsePayload;
 import jp.co.softbank.aal.application.payload.GetRecipesResponsePayload;
+import jp.co.softbank.aal.application.payload.CreateRecipeRequestPayload;
+import jp.co.softbank.aal.application.payload.CreateRecipeResponsePayload;
 import jp.co.softbank.aal.application.payload.RecipePayload;
 import jp.co.softbank.aal.common.SystemException;
 import jp.co.softbank.aal.domain.Recipe;
@@ -40,11 +42,70 @@ public class RecipesRestControllerTest {
     @Before
     public void setUp() throws Exception {
     }
-
+    
     @After
     public void tearDown() throws Exception {
     }
-
+    
+    @Test
+    public void test_レシピの作成が正常に処理できる場合() throws Exception {
+        CreateRecipeResponsePayload expected
+            = new CreateRecipeResponsePayload("Recipe successfully created!",
+                                              new RecipePayload(null,
+                                                               "トマトスープ",
+                                                               "15分",
+                                                               "5人",
+                                                               "玉ねぎ, トマト, スパイス, 水",
+                                                               "450"));
+        
+        CreateRecipeRequestPayload request
+            = new CreateRecipeRequestPayload("トマトスープ",
+                                             "15分",
+                                             "5人",
+                                             "玉ねぎ, トマト, スパイス, 水",
+                                             "450");
+        
+        mockMvc.perform(post("/recipes")
+               .content(marshall(request))
+               .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+               .andExpect(status().isOk())
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+               .andExpect(content().json(marshall(expected)));
+    }
+    
+    @Test
+    public void test_全レシピ一覧を正常に返せる場合() throws Exception {
+        when(service.getRecipes()).thenReturn(Arrays.asList(
+                new Recipe(1, "チキンカレー", "45分", "4人", "玉ねぎ,肉,スパイス", 1000),
+                new Recipe(2, "オムライス", "30分", "2人", "玉ねぎ,卵,スパイス,醤油", 700)
+                ));
+        
+        GetRecipesResponsePayload expected = new GetRecipesResponsePayload();
+        List<RecipePayload> recipes = Arrays.asList(
+            new RecipePayload(Integer.valueOf(1), "チキンカレー", "45分", "4人", "玉ねぎ,肉,スパイス", "1000"),
+            new RecipePayload(Integer.valueOf(2), "オムライス", "30分", "2人", "玉ねぎ,卵,スパイス,醤油", "700")
+        );
+        expected.setRecipes(recipes);
+        
+        mockMvc.perform(get("/recipes"))
+               .andExpect(status().isOk())
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+               .andExpect(content().json(marshall(expected)));
+    }
+    
+    @Test
+    public void test_全レシピ一覧の取得でシステムエラーが発生した場合() throws Exception {
+        when(service.getRecipes())
+            .thenThrow(new SystemException("database access error is occurred."));
+        
+        ErrorResponse expected = new ErrorResponse("database access error is occurred.", null);
+        
+        mockMvc.perform(get("/recipes"))
+               .andExpect(status().isInternalServerError())
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+               .andExpect(content().json(marshall(expected)));
+    }
+    
     @Test
     public void test_レシピを一つ正常に返せる場合() throws Exception {
         when(service.getRecipe(1)).thenReturn(new Recipe(1,
@@ -94,36 +155,4 @@ public class RecipesRestControllerTest {
                .andExpect(content().json(marshall(expected)));
     }
     
-    @Test
-    public void test_全レシピ一覧を正常に返せる場合() throws Exception {
-        when(service.getRecipes()).thenReturn(Arrays.asList(
-                new Recipe(1, "チキンカレー", "45分", "4人", "玉ねぎ,肉,スパイス", 1000),
-                new Recipe(2, "オムライス", "30分", "2人", "玉ねぎ,卵,スパイス,醤油", 700)
-                ));
-        
-        GetRecipesResponsePayload expected = new GetRecipesResponsePayload();
-        List<RecipePayload> recipes = Arrays.asList(
-            new RecipePayload(Integer.valueOf(1), "チキンカレー", "45分", "4人", "玉ねぎ,肉,スパイス", "1000"),
-            new RecipePayload(Integer.valueOf(2), "オムライス", "30分", "2人", "玉ねぎ,卵,スパイス,醤油", "700")
-        );
-        expected.setRecipes(recipes);
-        
-        mockMvc.perform(get("/recipes"))
-               .andExpect(status().isOk())
-               .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-               .andExpect(content().json(marshall(expected)));
-    }
-    
-    @Test
-    public void test_全レシピ一覧の取得でシステムエラーが発生した場合() throws Exception {
-        when(service.getRecipes())
-            .thenThrow(new SystemException("database access error is occurred."));
-        
-        ErrorResponse expected = new ErrorResponse("database access error is occurred.", null);
-        
-        mockMvc.perform(get("/recipes"))
-               .andExpect(status().isInternalServerError())
-               .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-               .andExpect(content().json(marshall(expected)));
-    }
 }
