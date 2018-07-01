@@ -18,6 +18,7 @@ import jp.co.softbank.aal.application.payload.GetRecipesResponsePayload;
 import jp.co.softbank.aal.application.payload.RecipePayload;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 
+@Ignore
 public class RecipesRestControllerTestIT {
     
     private static final Operation DELETE_ALL = deleteAllFrom("recipes");

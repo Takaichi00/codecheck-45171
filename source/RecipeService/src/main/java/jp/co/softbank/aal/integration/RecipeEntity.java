@@ -14,12 +14,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class RecipeEntity {
-    private int id;
+    private Integer id;
     private String title;
     private String makingTime;
     private String serves;
     private String ingredients;
-    private int cost;
+    private Integer cost;
     private Timestamp createdAt;
     private Timestamp updatedAt;
     

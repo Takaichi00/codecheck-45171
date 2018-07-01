@@ -33,6 +33,7 @@ public class RecipesDaoImplTest {
             + "  cost integer NOT NULL,"
             + "  created_at timestamp default CURRENT_TIMESTAMP,"
             + "  updated_at timestamp default CURRENT_TIMESTAMP);");
+    private static final Operation DELETE_ALL = deleteAllFrom("recipes");
     private static final Operation INSERT_RECIPES
         = insertInto("recipes")
             .columns("id",
@@ -66,7 +67,7 @@ public class RecipesDaoImplTest {
     
     @Before
     public void setUp() throws Exception {
-        Operation operation = sequenceOf(CREATE_TABLE, INSERT_RECIPES);
+        Operation operation = sequenceOf(CREATE_TABLE, DELETE_ALL, INSERT_RECIPES);
         DbSetup dbSetup = new DbSetup(
                 new DriverManagerDestination("jdbc:h2:mem:test;MODE=PostgreSQL;DB_CLOSE_DELAY=-1",
                                              "sa",

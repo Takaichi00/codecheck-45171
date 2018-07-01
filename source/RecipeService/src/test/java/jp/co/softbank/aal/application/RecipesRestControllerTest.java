@@ -49,6 +49,19 @@ public class RecipesRestControllerTest {
     
     @Test
     public void test_レシピの作成が正常に処理できる場合() throws Exception {
+        when(service.createRecipe(new Recipe(null,
+                                             "トマトスープ",
+                                             "15分",
+                                             "5人",
+                                             "玉ねぎ, トマト, スパイス, 水",
+                                             450)))
+            .thenReturn(new Recipe(3,
+                                   "トマトスープ",
+                                   "15分",
+                                   "5人",
+                                   "玉ねぎ, トマト, スパイス, 水",
+                                   450));
+        
         CreateRecipeResponsePayload expected
             = new CreateRecipeResponsePayload("Recipe successfully created!",
                                               new RecipePayload(null,
@@ -69,6 +82,21 @@ public class RecipesRestControllerTest {
                .content(marshall(request))
                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                .andExpect(status().isOk())
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+               .andExpect(content().json(marshall(expected)));
+    }
+    
+    @Test
+    public void test_レシピの作成でバリデーションエラーが発生する場合() throws Exception {
+        CreateRecipeRequestPayload request = new CreateRecipeRequestPayload();
+        
+        ErrorResponse expected = new ErrorResponse("Recipe creation failed!",
+                                                   "title, making_time, serves, ingredients, cost");
+        
+        mockMvc.perform(post("/recipes")
+               .content(marshall(request))
+               .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+               .andExpect(status().isBadRequest())
                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                .andExpect(content().json(marshall(expected)));
     }

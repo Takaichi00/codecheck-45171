@@ -46,4 +46,13 @@ public class RecipesManagementServiceImpl implements RecipesManagementService {
         return result;
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Recipe createRecipe(Recipe recipe) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
 }
