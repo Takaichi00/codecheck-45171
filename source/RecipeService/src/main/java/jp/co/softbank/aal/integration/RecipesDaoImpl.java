@@ -28,32 +28,9 @@ public class RecipesDaoImpl implements RecipesDao {
      * {@inheritDoc}
      */
     @Override
-    public RecipeEntity find(int id) {
-        RecipeEntity result = null;
-        
-        try {
-            Map<String, Object> record
-                = jdbcTemplate.queryForMap("select * from recipes where id = ?", id);
-            
-            result = new RecipeEntity(((Integer) record.get("ID")).intValue(),
-                                      (String) record.get("TITLE"),
-                                      (String) record.get("MAKING_TIME"),
-                                      (String) record.get("SERVES"),
-                                      (String) record.get("INGREDIENTS"),
-                                      ((Integer) record.get("COST")).intValue(),
-                                      (Timestamp) record.get("CREATED_AT"),
-                                      (Timestamp) record.get("UPDATED_AT"));
-            
-        } catch (EmptyResultDataAccessException e) {
-            LOG.info("recipe (id={}) is not found.", id);
-            
-        } catch (DataAccessException e) {
-            LOG.error("database access error is occurred.", e);
-            throw new SystemException("database access error is occurred.", e);
-            
-        }
-        
-        return result;
+    public RecipeEntity create(RecipeEntity entity) {
+        // TODO Auto-generated method stub
+        return null;
     }
     
     /**
@@ -77,6 +54,38 @@ public class RecipesDaoImpl implements RecipesDao {
                                             (Timestamp) record.get("UPDATED_AT")));
             }
         
+        } catch (DataAccessException e) {
+            LOG.error("database access error is occurred.", e);
+            throw new SystemException("database access error is occurred.", e);
+            
+        }
+        
+        return result;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RecipeEntity find(int id) {
+        RecipeEntity result = null;
+        
+        try {
+            Map<String, Object> record
+                = jdbcTemplate.queryForMap("select * from recipes where id = ?", id);
+            
+            result = new RecipeEntity(((Integer) record.get("ID")).intValue(),
+                                      (String) record.get("TITLE"),
+                                      (String) record.get("MAKING_TIME"),
+                                      (String) record.get("SERVES"),
+                                      (String) record.get("INGREDIENTS"),
+                                      ((Integer) record.get("COST")).intValue(),
+                                      (Timestamp) record.get("CREATED_AT"),
+                                      (Timestamp) record.get("UPDATED_AT"));
+            
+        } catch (EmptyResultDataAccessException e) {
+            LOG.info("recipe (id={}) is not found.", id);
+            
         } catch (DataAccessException e) {
             LOG.error("database access error is occurred.", e);
             throw new SystemException("database access error is occurred.", e);

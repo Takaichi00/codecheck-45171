@@ -3,16 +3,12 @@ package jp.co.softbank.aal.application.payload;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import jp.co.softbank.aal.domain.Recipe;
-
 import javax.validation.constraints.NotNull;
-
-import org.apache.commons.lang.math.NumberUtils;
-
+import jp.co.softbank.aal.domain.Recipe;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang.math.NumberUtils;
 
 /**
  * レシピを作成するエンドポイントのリクエストメッセージを表現するクラスです。

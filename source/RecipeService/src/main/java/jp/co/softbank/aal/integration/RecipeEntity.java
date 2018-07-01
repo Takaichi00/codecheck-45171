@@ -24,6 +24,24 @@ public class RecipeEntity {
     private Timestamp updatedAt;
     
     /**
+     * {@link Recipe} ドメインクラスのインスタンスの情報を使用して、{@link RecipeEntity}
+     * エンティティのインスタンスを構築します。
+     * 
+     * @param recipe {@link Recipe} ドメインクラスのインスタンス
+     * @return {@link RecipeEntity} エンティティのインスタンス
+     */
+    public static RecipeEntity createInstance(Recipe recipe) {
+        return new RecipeEntity(null,
+                                recipe.getTitle(),
+                                recipe.getMakingTime(),
+                                recipe.getServes(),
+                                recipe.getIngredients(),
+                                recipe.getCost(),
+                                null,
+                                null);
+    }
+    
+    /**
      * このクラスの情報を使用してドメインのクラスを作成します。
      * 
      * @return {@link Recipe} ドメインクラスのインスタンス

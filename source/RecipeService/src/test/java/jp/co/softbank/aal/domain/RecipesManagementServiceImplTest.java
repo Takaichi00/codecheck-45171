@@ -38,21 +38,34 @@ public class RecipesManagementServiceImplTest {
     @After
     public void tearDown() throws Exception {
     }
-
+    
     @Test
-    public void test_レシピを一つ正常に返せる場合() {
-        when(dao.find(1)).thenReturn(new RecipeEntity(1,
-                                                     "チキンカレー",
-                                                     "45分",
-                                                     "4人",
-                                                     "玉ねぎ,肉,スパイス",
-                                                     1000,
-                                                     Timestamp.valueOf("2016-01-10 12:10:12"),
-                                                     Timestamp.valueOf("2016-01-10 12:10:12")));
+    public void test_レシピを正常に作成できる場合() {
+        when(dao.create(new RecipeEntity(null,
+                                         "トマトスープ",
+                                         "15分",
+                                         "5人",
+                                         "玉ねぎ, トマト, スパイス, 水",
+                                         450,
+                                         null,
+                                         null)))
+            .thenReturn(new RecipeEntity(3,
+                                         "トマトスープ",
+                                         "15分",
+                                         "5人",
+                                         "玉ねぎ, トマト, スパイス, 水",
+                                         450,
+                                         Timestamp.valueOf("2018-01-10 12:10:12"),
+                                         Timestamp.valueOf("2018-01-10 12:10:12")));
         
-        Recipe actual = service.getRecipe(1);
-        Recipe expected = new Recipe(1, "チキンカレー", "45分", "4人", "玉ねぎ,肉,スパイス", 1000);
+        Recipe actual = service.createRecipe(new Recipe(null,
+                                                        "トマトスープ",
+                                                        "15分",
+                                                        "5人",
+                                                        "玉ねぎ, トマト, スパイス, 水",
+                                                        450));
         
+        Recipe expected = new Recipe(3, "トマトスープ", "15分", "5人", "玉ねぎ, トマト, スパイス, 水", 450);
         assertThat(actual, is(expected));
     }
     
@@ -82,7 +95,24 @@ public class RecipesManagementServiceImplTest {
         List<Recipe> expected = new ArrayList<>();
         expected.add(new Recipe(1, "チキンカレー", "45分", "4人", "玉ねぎ,肉,スパイス", 1000));
         expected.add(new Recipe(2, "オムライス", "30分", "2人", "玉ねぎ,卵,スパイス,醤油", 700));
-        
         assertThat(actual, is(expected));
     }
+    
+    @Test
+    public void test_レシピを一つ正常に返せる場合() {
+        when(dao.find(1)).thenReturn(new RecipeEntity(1,
+                                                     "チキンカレー",
+                                                     "45分",
+                                                     "4人",
+                                                     "玉ねぎ,肉,スパイス",
+                                                     1000,
+                                                     Timestamp.valueOf("2016-01-10 12:10:12"),
+                                                     Timestamp.valueOf("2016-01-10 12:10:12")));
+        
+        Recipe actual = service.getRecipe(1);
+        
+        Recipe expected = new Recipe(1, "チキンカレー", "45分", "4人", "玉ねぎ,肉,スパイス", 1000);
+        assertThat(actual, is(expected));
+    }
+    
 }
