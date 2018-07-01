@@ -1,5 +1,6 @@
 package jp.co.softbank.aal.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import jp.co.softbank.aal.integration.RecipeEntity;
 import jp.co.softbank.aal.integration.RecipesDao;
@@ -26,7 +27,7 @@ public class RecipesManagementServiceImpl implements RecipesManagementService {
             return null;
         }
         
-        return entity.createDomain();
+        return entity.createInstance();
     }
     
     /**
@@ -34,8 +35,15 @@ public class RecipesManagementServiceImpl implements RecipesManagementService {
      */
     @Override
     public List<Recipe> getRecipes() {
-        // TODO Auto-generated method stub
-        return null;
+        List<Recipe> result = new ArrayList<>();
+        
+        List<RecipeEntity> entities = dao.findAll();
+        
+        for (RecipeEntity entity : entities) {
+            result.add(entity.createInstance());
+        }
+        
+        return result;
     }
     
 }

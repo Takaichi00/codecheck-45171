@@ -28,7 +28,7 @@ public class RecipeEntity {
      * 
      * @return {@link Recipe} ドメインクラスのインスタンス
      */
-    public Recipe createDomain() {
+    public Recipe createInstance() {
         return new Recipe(id, title, makingTime, serves, ingredients, cost);
     }
 }

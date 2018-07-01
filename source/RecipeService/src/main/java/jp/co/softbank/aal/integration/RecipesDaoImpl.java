@@ -1,6 +1,7 @@
 package jp.co.softbank.aal.integration;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Map;
 import jp.co.softbank.aal.common.SystemException;
 import org.slf4j.Logger;
@@ -52,6 +53,15 @@ public class RecipesDaoImpl implements RecipesDao {
         }
         
         return result;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<RecipeEntity> findAll() {
+        // TODO Auto-generated method stub
+        return null;
     }
     
 }

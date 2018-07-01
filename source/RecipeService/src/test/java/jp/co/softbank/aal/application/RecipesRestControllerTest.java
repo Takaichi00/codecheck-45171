@@ -84,7 +84,7 @@ public class RecipesRestControllerTest {
     }
     
     @Test
-    public void test_指定されたレシピの取得でシステムエラーが発しした場合() throws Exception {
+    public void test_指定されたレシピの取得でシステムエラーが発生した場合() throws Exception {
         when(service.getRecipe(1)).thenThrow(new SystemException("database access error is occurred."));
         
         ErrorResponse expected = new ErrorResponse("database access error is occurred.", null);
