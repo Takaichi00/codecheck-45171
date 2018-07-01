@@ -3,7 +3,11 @@ package jp.co.softbank.aal.application;
 import static jp.co.softbank.aal.common.Messages.GET_RECIPE_OK;
 import static jp.co.softbank.aal.common.Messages.RECIPE_NOT_FOUND;
 
+import java.util.Arrays;
+import java.util.List;
+
 import jp.co.softbank.aal.application.payload.GetRecipeResponsePayload;
+import jp.co.softbank.aal.application.payload.GetRecipesResponsePayload;
 import jp.co.softbank.aal.application.payload.InternalServerException;
 import jp.co.softbank.aal.application.payload.NotFoundException;
 import jp.co.softbank.aal.application.payload.RecipePayload;
@@ -28,13 +32,29 @@ public class RecipesRestController {
     RecipesManagementService service;
     
     /**
+     * 全レシピ一覧を返すエンドポイント。
+     * 
+     * @return 全レシピ一覧のペイロード
+     */
+    @RequestMapping(method = RequestMethod.GET)
+    public GetRecipesResponsePayload getRecipes() {
+        GetRecipesResponsePayload result = new GetRecipesResponsePayload();
+        List<RecipePayload> recipes = Arrays.asList(
+            new RecipePayload(Integer.valueOf(1), "チキンカレー", "45分", "4人", "玉ねぎ,肉,スパイス", "1000"),
+            new RecipePayload(Integer.valueOf(2), "オムライス", "30分", "2人", "玉ねぎ,卵,スパイス,醤油", "700")
+        );
+        result.setRecipes(recipes);
+        
+        return result;
+    }
+    
+    /**
      * ID で指定されたレシピを一つを返すエンドポイント。
      * 
      * @param id 取得したいレシピの ID
      * @return 指定された ID に対するレシピのペイロード
      */
-    @RequestMapping(method = RequestMethod.GET,
-                    value = "{id}")
+    @RequestMapping(method = RequestMethod.GET, value = "{id}")
     public GetRecipeResponsePayload getRecipe(@PathVariable("id") String id) {
         Recipe recipe = null;
         
@@ -53,5 +73,4 @@ public class RecipesRestController {
         recipePayload.setId(null);
         return new GetRecipeResponsePayload(GET_RECIPE_OK, recipePayload);
     }
-    
 }

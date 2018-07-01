@@ -37,7 +37,7 @@ public class RecipesRestControllerTestIT {
         = insertInto("recipes")
             .columns("id", "title", "making_time", "serves", "ingredients", "cost", "created_at", "updated_at")
             .values(1, "チキンカレー", "45分", "4人", "玉ねぎ,肉,スパイス", 1000, Timestamp.valueOf("2016-01-10 12:10:12"), Timestamp.valueOf("2016-01-10 12:10:12"))
-//            .values(2, "オムライス", "30分", "2人", "玉ねぎ,卵,スパイス,醤油", 700, Timestamp.valueOf("2016-01-11 13:10:12"), Timestamp.valueOf("2016-01-11 13:10:12"))
+            .values(2, "オムライス", "30分", "2人", "玉ねぎ,卵,スパイス,醤油", 700, Timestamp.valueOf("2016-01-11 13:10:12"), Timestamp.valueOf("2016-01-11 13:10:12"))
             .build();
     
     private TestRestTemplate client = new TestRestTemplate();
@@ -78,7 +78,7 @@ public class RecipesRestControllerTestIT {
     
     @Test
     public void test_IDで指定されたレシピが参照できない場合() throws Exception {
-        RequestEntity request = RequestEntity.get(new URI("http://localhost:8080/recipes/2")).build();
+        RequestEntity request = RequestEntity.get(new URI("http://localhost:8080/recipes/3")).build();
         ResponseEntity<ErrorResponse> actual
             = client.exchange(request, ErrorResponse.class);
         

@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 指定された id に対応するレシピを返すエンドポイントのレスポンスメッセージ
+ * 指定された ID に対応するレシピを返すエンドポイントのレスポンスメッセージ
  * を表現するクラスです。
  */
 @AllArgsConstructor

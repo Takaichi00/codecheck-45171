@@ -7,8 +7,12 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 import jp.co.softbank.aal.application.payload.ErrorResponse;
 import jp.co.softbank.aal.application.payload.GetRecipeResponsePayload;
+import jp.co.softbank.aal.application.payload.GetRecipesResponsePayload;
 import jp.co.softbank.aal.application.payload.NotFoundException;
 import jp.co.softbank.aal.application.payload.RecipePayload;
 import jp.co.softbank.aal.common.SystemException;
@@ -90,5 +94,19 @@ public class RecipesRestControllerTest {
                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                .andExpect(content().json(marshall(expected)));
     }
-
+    
+    @Test
+    public void test_全レシピ一覧を正常に返せる場合() throws Exception {
+        GetRecipesResponsePayload expected = new GetRecipesResponsePayload();
+        List<RecipePayload> recipes = Arrays.asList(
+            new RecipePayload(Integer.valueOf(1), "チキンカレー", "45分", "4人", "玉ねぎ,肉,スパイス", "1000"),
+            new RecipePayload(Integer.valueOf(2), "オムライス", "30分", "2人", "玉ねぎ,卵,スパイス,醤油", "700")
+        );
+        expected.setRecipes(recipes);
+        
+        mockMvc.perform(get("/recipes"))
+               .andExpect(status().isOk())
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+               .andExpect(content().json(marshall(expected)));
+    }
 }

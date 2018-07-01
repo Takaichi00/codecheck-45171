@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @JsonPropertyOrder({"id", "title", "making_time", "serves", "ingredients", "cost"})
 public class RecipePayload {
     
-    private String id;
+    private Integer id;
     
     private String title;
     
@@ -35,7 +35,7 @@ public class RecipePayload {
      * このペイロードの内容から {@link Recipe} クラスのインスタンスを作成します。
      */
     public RecipePayload(Recipe recipe) {
-        this(Integer.toString(recipe.getId()),
+        this(Integer.valueOf((recipe.getId())),
              recipe.getTitle(),
              recipe.getMakingTime(),
              recipe.getServes(),
