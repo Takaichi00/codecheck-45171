@@ -36,7 +36,15 @@ public class RecipesRestController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public GetRecipesResponsePayload getRecipes() {
-        List<Recipe> recipes = service.getRecipes();
+        List<Recipe> recipes = null;
+        
+        try {
+            recipes = service.getRecipes();
+            
+        } catch (SystemException e) {
+            throw new InternalServerException(e.getMessage());
+        }
+        
         return GetRecipesResponsePayload.createInstance(recipes);
     }
     

@@ -9,11 +9,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Arrays;
 import java.util.List;
-
 import jp.co.softbank.aal.application.payload.ErrorResponse;
 import jp.co.softbank.aal.application.payload.GetRecipeResponsePayload;
 import jp.co.softbank.aal.application.payload.GetRecipesResponsePayload;
-import jp.co.softbank.aal.application.payload.NotFoundException;
 import jp.co.softbank.aal.application.payload.RecipePayload;
 import jp.co.softbank.aal.common.SystemException;
 import jp.co.softbank.aal.domain.Recipe;
@@ -85,7 +83,8 @@ public class RecipesRestControllerTest {
     
     @Test
     public void test_指定されたレシピの取得でシステムエラーが発生した場合() throws Exception {
-        when(service.getRecipe(1)).thenThrow(new SystemException("database access error is occurred."));
+        when(service.getRecipe(1))
+            .thenThrow(new SystemException("database access error is occurred."));
         
         ErrorResponse expected = new ErrorResponse("database access error is occurred.", null);
         
@@ -111,6 +110,19 @@ public class RecipesRestControllerTest {
         
         mockMvc.perform(get("/recipes"))
                .andExpect(status().isOk())
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+               .andExpect(content().json(marshall(expected)));
+    }
+    
+    @Test
+    public void test_全レシピ一覧の取得でシステムエラーが発生した場合() throws Exception {
+        when(service.getRecipes())
+            .thenThrow(new SystemException("database access error is occurred."));
+        
+        ErrorResponse expected = new ErrorResponse("database access error is occurred.", null);
+        
+        mockMvc.perform(get("/recipes"))
+               .andExpect(status().isInternalServerError())
                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                .andExpect(content().json(marshall(expected)));
     }
