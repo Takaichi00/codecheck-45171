@@ -42,4 +42,5 @@ public class RecipePayload {
              recipe.getIngredients(),
              Integer.toString(recipe.getCost()));
     }
+    
 }

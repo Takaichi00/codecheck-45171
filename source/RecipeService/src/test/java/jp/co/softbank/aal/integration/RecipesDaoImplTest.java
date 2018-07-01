@@ -20,16 +20,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class RecipesDaoImplTest {
     
-    private static final Operation CREATE_TABLE = sql("CREATE TABLE IF NOT EXISTS recipes (" + 
-                                                      "  id SERIAL PRIMARY KEY," + 
-                                                      "  title varchar(100) NOT NULL," + 
-                                                      "  making_time varchar(100) NOT NULL," + 
-                                                      "  serves varchar(100)NOT NULL," + 
-                                                      "  ingredients varchar(300) NOT NULL," + 
-                                                      "  cost integer NOT NULL," + 
-                                                      "  created_at timestamp default CURRENT_TIMESTAMP," + 
-                                                      "  updated_at timestamp default CURRENT_TIMESTAMP);");
-    private static final Operation DELETE_ALL = deleteAllFrom("recipes");
+    private static final Operation CREATE_TABLE
+        = sql("CREATE TABLE IF NOT EXISTS recipes ("
+            + "  id SERIAL PRIMARY KEY,"
+            + "  title varchar(100) NOT NULL,"
+            + "  making_time varchar(100) NOT NULL,"
+            + "  serves varchar(100) NOT NULL,"
+            + "  ingredients varchar(300) NOT NULL,"
+            + "  cost integer NOT NULL,"
+            + "  created_at timestamp default CURRENT_TIMESTAMP,"
+            + "  updated_at timestamp default CURRENT_TIMESTAMP);");
     private static final Operation INSERT_RECIPES
         = insertInto("recipes")
             .columns("id", "title", "making_time", "serves", "ingredients", "cost", "created_at", "updated_at")
@@ -37,11 +37,11 @@ public class RecipesDaoImplTest {
             .build();
     
     @Autowired
-    RecipesDaoImpl dao;
+    private RecipesDaoImpl dao;
     
     @Before
     public void setUp() throws Exception {
-        Operation operation = sequenceOf(CREATE_TABLE, DELETE_ALL, INSERT_RECIPES);
+        Operation operation = sequenceOf(CREATE_TABLE, INSERT_RECIPES);
         DbSetup dbSetup = new DbSetup(new DriverManagerDestination("jdbc:h2:mem:test;MODE=PostgreSQL;DB_CLOSE_DELAY=-1", "sa", "sa"), operation);
         dbSetup.launch();
     }
