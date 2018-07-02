@@ -29,7 +29,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 
-//@Ignore
+@Ignore
 public class RecipesRestControllerTestIT {
     
     private static final Operation DROP_TABLE = sql(readSql("V101__drop_table.sql"));

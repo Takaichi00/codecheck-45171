@@ -72,6 +72,25 @@ public class RecipesDaoImplTest {
     }
     
     @Test
+    public void test_正常にデータが1件削除できる場合() {
+        List<RecipeEntity> expected = new ArrayList<>();
+        expected.add(new RecipeEntity(2,
+                                      "オムライス",
+                                      "30分",
+                                      "2人",
+                                      "玉ねぎ,卵,スパイス,醤油",
+                                      700,
+                                      Timestamp.valueOf("2016-01-11 13:10:12"),
+                                      Timestamp.valueOf("2016-01-11 13:10:12")));
+        
+        int executed = dao.delete(1);
+        assertThat(executed, is(1));
+        
+        List<RecipeEntity> actual = dao.findAll();
+        assertThat(actual, is(expected));
+    }
+    
+    @Test
     public void test_正常にデータの登録ができる場合() {
         RecipeEntity actual = dao.create(new RecipeEntity(null,
                                                          "トマトスープ",

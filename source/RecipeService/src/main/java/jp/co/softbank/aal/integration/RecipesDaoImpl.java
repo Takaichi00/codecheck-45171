@@ -22,6 +22,7 @@ public class RecipesDaoImpl implements RecipesDao {
     
     private static final Logger LOG = LoggerFactory.getLogger(RecipesDaoImpl.class);
     
+    private static final String DELETE_RECIPE = "delete from recipes where id = ?";
     private static final String CREATE_RECIPE
         = "insert into recipes(title, making_time , serves, ingredients, cost) "
           + "values(?, ?, ?, ?, ?)";
@@ -37,8 +38,21 @@ public class RecipesDaoImpl implements RecipesDao {
      */
     @Override
     public int delete(Integer id) {
-        // TODO Auto-generated method stub
-        return 0;
+        int result = 0;
+        
+        try {
+            result = jdbcTemplate.update(DELETE_RECIPE, id);
+            
+        } catch (EmptyResultDataAccessException e) {
+            LOG.info("recipe (id={}) is not found.", id);
+            
+        } catch (DataAccessException e) {
+            LOG.error("database access error is occurred.", e);
+            throw new SystemException("database access error is occurred.", e);
+            
+        }
+        
+        return result;
     }
     
     /**
