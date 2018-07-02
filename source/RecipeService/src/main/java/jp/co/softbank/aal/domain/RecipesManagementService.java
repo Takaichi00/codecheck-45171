@@ -12,6 +12,7 @@ public interface RecipesManagementService {
      * 
      * @param recipe 作成するレシピの情報
      * @return 作成が完了したレシピの情報
+     * @throws SystemException システムエラーが発生した場合
      */
     Recipe createRecipe(Recipe recipe);
     

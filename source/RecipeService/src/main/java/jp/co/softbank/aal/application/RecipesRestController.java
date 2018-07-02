@@ -54,7 +54,14 @@ public class RecipesRestController {
             throw new BadRequestException(CREATE_RECIPE_NG, REQUIRED_FIELDS);
         }
         
-        Recipe recipe = service.createRecipe(request.createInstance());
+        Recipe recipe = null;
+        
+        try {
+            recipe = service.createRecipe(request.createInstance());
+            
+        } catch (SystemException e) {
+            throw new InternalServerException(e.getMessage());
+        }
         
         RecipePayload recipePayload = RecipePayload.createInstance(recipe);
         recipePayload.setId(null);
