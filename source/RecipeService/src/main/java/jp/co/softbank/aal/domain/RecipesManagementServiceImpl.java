@@ -21,8 +21,7 @@ public class RecipesManagementServiceImpl implements RecipesManagementService {
      */
     @Override
     public int deleteRecipe(Integer id) {
-        // TODO Auto-generated method stub
-        return 0;
+        return dao.delete(id);
     }
     
     /**

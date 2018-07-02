@@ -11,7 +11,7 @@ public interface RecipesManagementService {
      * 指定された ID に対応するレシピを削除します。
      * 
      * @param id レシピを削除する ID
-     * @return 処理したレコードの件数
+     * @return 処理したレシピの件数
      * @throws SystemException システムエラーが発生した場合
      */
     int deleteRecipe(Integer id);

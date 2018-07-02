@@ -40,6 +40,16 @@ public class RecipesManagementServiceImplTest {
     }
     
     @Test
+    public void test_レシピを一つ正常に削除できる場合() {
+        when(dao.delete(1)).thenReturn(1);
+        
+        int actual = service.deleteRecipe(1);
+        
+        int expected = 1;
+        assertThat(actual, is(expected));
+    }
+    
+    @Test
     public void test_レシピを正常に作成できる場合() {
         when(dao.create(new RecipeEntity(null,
                                          "トマトスープ",
