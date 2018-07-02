@@ -12,9 +12,9 @@ import java.net.URI;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
 import jp.co.softbank.aal.application.payload.CreateRecipeRequestPayload;
 import jp.co.softbank.aal.application.payload.CreateRecipeResponsePayload;
+import jp.co.softbank.aal.application.payload.DeleteRecipeResponsePayload;
 import jp.co.softbank.aal.application.payload.ErrorResponse;
 import jp.co.softbank.aal.application.payload.GetRecipeResponsePayload;
 import jp.co.softbank.aal.application.payload.GetRecipesResponsePayload;
@@ -74,6 +74,33 @@ public class RecipesRestControllerTestIT {
     
     @After
     public void tearDown() throws Exception {
+    }
+    
+    @Test
+    public void test_レシピを一つ正常に削除できる場合() throws Exception {
+        RequestEntity request = RequestEntity.delete(new URI("http://localhost:8080/recipes/1")).build();
+        ResponseEntity<DeleteRecipeResponsePayload> actual
+            = client.exchange(request, DeleteRecipeResponsePayload.class);
+        
+        DeleteRecipeResponsePayload expected
+            = new DeleteRecipeResponsePayload("Recipe successfully removed!");
+        
+        assertThat(actual.getBody(), is(expected));
+        assertThat(actual.getStatusCode(), is(HttpStatus.OK));
+        assertThat(actual.getHeaders().getContentType(), is(MediaType.APPLICATION_JSON_UTF8));
+    }
+    
+    @Test
+    public void test_IDで指定されたレシピが削除できない場合() throws Exception {
+        RequestEntity request = RequestEntity.delete(new URI("http://localhost:8080/recipes/3")).build();
+        ResponseEntity<ErrorResponse> actual
+            = client.exchange(request, ErrorResponse.class);
+        
+        ErrorResponse expected = new ErrorResponse("No Recipe found", null);
+        
+        assertThat(actual.getBody(), is(expected));
+        assertThat(actual.getStatusCode(), is(HttpStatus.NOT_FOUND));
+        assertThat(actual.getHeaders().getContentType(), is(MediaType.APPLICATION_JSON_UTF8));
     }
     
     @Test

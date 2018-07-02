@@ -53,7 +53,16 @@ public class RecipesRestController {
     public DeleteRecipeResponsePayload deleteRecipe(@PathVariable("id") String id) {
         int result = 0;
         
-        result = service.deleteRecipe(NumberUtils.createInteger(id));
+        try {
+            result = service.deleteRecipe(NumberUtils.createInteger(id));
+            
+        } catch (SystemException e) {
+            throw new InternalServerException(e.getMessage());
+        }
+        
+        if (result == 0) {
+            throw new NotFoundException(RECIPE_NOT_FOUND);
+        }
         
         return new DeleteRecipeResponsePayload(DELETE_RECIPE_OK);
     }

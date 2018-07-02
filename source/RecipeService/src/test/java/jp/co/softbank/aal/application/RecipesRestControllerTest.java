@@ -62,6 +62,31 @@ public class RecipesRestControllerTest {
     }
     
     @Test
+    public void test_指定されたIDに対応するレシピが存在せず削除できない場合() throws Exception {
+        when(service.deleteRecipe(2)).thenReturn(0);
+        
+        ErrorResponse expected = new ErrorResponse("No Recipe found", null);
+        
+        mockMvc.perform(delete("/recipes/2"))
+               .andExpect(status().isNotFound())
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+               .andExpect(content().json(marshall(expected)));
+    }
+    
+    @Test
+    public void test_指定されたレシピの削除でシステムエラーが発生した場合() throws Exception {
+        when(service.deleteRecipe(1))
+            .thenThrow(new SystemException("database access error is occurred."));
+        
+        ErrorResponse expected = new ErrorResponse("database access error is occurred.", null);
+        
+        mockMvc.perform(delete("/recipes/1"))
+               .andExpect(status().isInternalServerError())
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+               .andExpect(content().json(marshall(expected)));
+    }
+    
+    @Test
     public void test_レシピの作成が正常に処理できる場合() throws Exception {
         when(service.createRecipe(new Recipe(null,
                                              "トマトスープ",
@@ -111,6 +136,33 @@ public class RecipesRestControllerTest {
                .content(marshall(request))
                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                .andExpect(status().isBadRequest())
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+               .andExpect(content().json(marshall(expected)));
+    }
+    
+    @Test
+    public void test_レシピの作成でシステムエラーが発生した場合() throws Exception {
+        when(service.createRecipe(new Recipe(null,
+                                             "トマトスープ",
+                                             "15分",
+                                             "5人",
+                                             "玉ねぎ, トマト, スパイス, 水",
+                                             450)))
+            .thenThrow(new SystemException("database access error is occurred."));
+        
+        ErrorResponse expected = new ErrorResponse("database access error is occurred.", null);
+        
+        CreateRecipeRequestPayload request
+            = new CreateRecipeRequestPayload("トマトスープ",
+                                             "15分",
+                                             "5人",
+                                             "玉ねぎ, トマト, スパイス, 水",
+                                             "450");
+        
+        mockMvc.perform(post("/recipes")
+               .content(marshall(request))
+               .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+               .andExpect(status().isInternalServerError())
                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                .andExpect(content().json(marshall(expected)));
     }
