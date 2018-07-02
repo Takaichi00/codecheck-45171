@@ -2,6 +2,7 @@ package jp.co.softbank.aal.application;
 
 import static jp.co.softbank.aal.common.Constants.CREATE_RECIPE_NG;
 import static jp.co.softbank.aal.common.Constants.CREATE_RECIPE_OK;
+import static jp.co.softbank.aal.common.Constants.DELETE_RECIPE_OK;
 import static jp.co.softbank.aal.common.Constants.GET_RECIPE_OK;
 import static jp.co.softbank.aal.common.Constants.RECIPE_NOT_FOUND;
 import static jp.co.softbank.aal.common.Constants.REQUIRED_FIELDS;
@@ -10,6 +11,7 @@ import java.util.List;
 import jp.co.softbank.aal.application.payload.BadRequestException;
 import jp.co.softbank.aal.application.payload.CreateRecipeRequestPayload;
 import jp.co.softbank.aal.application.payload.CreateRecipeResponsePayload;
+import jp.co.softbank.aal.application.payload.DeleteRecipeResponsePayload;
 import jp.co.softbank.aal.application.payload.GetRecipeResponsePayload;
 import jp.co.softbank.aal.application.payload.GetRecipesResponsePayload;
 import jp.co.softbank.aal.application.payload.InternalServerException;
@@ -40,12 +42,27 @@ public class RecipesRestController {
     RecipesManagementService service;
     
     /**
+     * ID で指定されたレシピを削除するエンドポイント。
+     * 
+     * @param id 削除したいレシピの ID
+     * @return 削除処理の結果のレシピのペイロード
+     */
+    @RequestMapping(method = RequestMethod.DELETE,
+                    value = "{id}",
+                    produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public DeleteRecipeResponsePayload deleteRecipe(@PathVariable("id") String id) {
+        return new DeleteRecipeResponsePayload(DELETE_RECIPE_OK);
+    }
+    
+    /**
      * レシピを作成するエンドポイント。
      * 
      * @param request 作成するレシピのペイロード
      * @return 作成結果のペイロード
      */
-    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(method = RequestMethod.POST,
+                    consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public CreateRecipeResponsePayload createRecipe(@RequestBody
                                                     @Validated
                                                     CreateRecipeRequestPayload request,
@@ -73,7 +90,7 @@ public class RecipesRestController {
      * 
      * @return 全レシピの一覧のペイロード
      */
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public GetRecipesResponsePayload getRecipes() {
         List<Recipe> recipes = null;
         
@@ -93,7 +110,9 @@ public class RecipesRestController {
      * @param id 取得したいレシピの ID
      * @return 指定された ID に対するレシピのペイロード
      */
-    @RequestMapping(method = RequestMethod.GET, value = "{id}")
+    @RequestMapping(method = RequestMethod.GET,
+                    value = "{id}",
+                    produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public GetRecipeResponsePayload getRecipe(@PathVariable("id") String id) {
         Recipe recipe = null;
         

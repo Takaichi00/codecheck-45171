@@ -14,6 +14,7 @@ import jp.co.softbank.aal.application.payload.GetRecipeResponsePayload;
 import jp.co.softbank.aal.application.payload.GetRecipesResponsePayload;
 import jp.co.softbank.aal.application.payload.CreateRecipeRequestPayload;
 import jp.co.softbank.aal.application.payload.CreateRecipeResponsePayload;
+import jp.co.softbank.aal.application.payload.DeleteRecipeResponsePayload;
 import jp.co.softbank.aal.application.payload.RecipePayload;
 import jp.co.softbank.aal.common.SystemException;
 import jp.co.softbank.aal.domain.Recipe;
@@ -45,6 +46,17 @@ public class RecipesRestControllerTest {
     
     @After
     public void tearDown() throws Exception {
+    }
+    
+    @Test
+    public void test_指定されたレシピを正常に削除できる場合() throws Exception {
+        DeleteRecipeResponsePayload expected
+            = new DeleteRecipeResponsePayload("Recipe successfully removed!");
+        
+        mockMvc.perform(delete("/recipes/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().json(marshall(expected)));
     }
     
     @Test
