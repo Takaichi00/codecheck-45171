@@ -1,5 +1,3 @@
-DROP TABLE IF EXISTS recipes;
-
 CREATE TABLE IF NOT EXISTS recipes (
   id SERIAL PRIMARY KEY,
   title varchar(100) NOT NULL,

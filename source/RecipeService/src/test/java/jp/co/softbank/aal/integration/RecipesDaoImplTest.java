@@ -1,16 +1,19 @@
 package jp.co.softbank.aal.integration;
 
+import static com.ninja_squad.dbsetup.Operations.*;
+import static jp.co.softbank.aal.common.TestUtils.*;
 import static org.hamcrest.CoreMatchers.*; 
 import static org.junit.Assert.*;
-import static com.ninja_squad.dbsetup.Operations.*;
 
 import com.ninja_squad.dbsetup.DbSetup;
 import com.ninja_squad.dbsetup.destination.DriverManagerDestination;
 import com.ninja_squad.dbsetup.operation.Operation;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,37 +26,25 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class RecipesDaoImplTest {
     
-    private static final Operation CREATE_TABLE
-        = sql("CREATE TABLE IF NOT EXISTS recipes ("
-            + "  id SERIAL PRIMARY KEY,"
-            + "  title varchar(100) NOT NULL,"
-            + "  making_time varchar(100) NOT NULL,"
-            + "  serves varchar(100) NOT NULL,"
-            + "  ingredients varchar(300) NOT NULL,"
-            + "  cost integer NOT NULL,"
-            + "  created_at timestamp default CURRENT_TIMESTAMP,"
-            + "  updated_at timestamp default CURRENT_TIMESTAMP);");
-    private static final Operation DELETE_ALL = deleteAllFrom("recipes");
+    private static final Operation DROP_TABLE = sql(readSql("V101__drop_table.sql"));
+    private static final Operation CREATE_TABLE = sql(readSql("V102__create_table.sql"));
     private static final Operation INSERT_RECIPES
         = insertInto("recipes")
-            .columns("id",
-                     "title",
+            .columns("title",
                      "making_time",
                      "serves",
                      "ingredients",
                      "cost",
                      "created_at",
                      "updated_at")
-            .values(1,
-                    "チキンカレー",
+            .values("チキンカレー",
                     "45分",
                     "4人",
                     "玉ねぎ,肉,スパイス",
                     1000,
                     Timestamp.valueOf("2016-01-10 12:10:12"),
                     Timestamp.valueOf("2016-01-10 12:10:12"))
-            .values(2,
-                    "オムライス",
+            .values("オムライス",
                     "30分",
                     "2人",
                     "玉ねぎ,卵,スパイス,醤油",
@@ -67,7 +58,7 @@ public class RecipesDaoImplTest {
     
     @Before
     public void setUp() throws Exception {
-        Operation operation = sequenceOf(CREATE_TABLE, DELETE_ALL, INSERT_RECIPES);
+        Operation operation = sequenceOf(DROP_TABLE, CREATE_TABLE, INSERT_RECIPES);
         DbSetup dbSetup = new DbSetup(
                 new DriverManagerDestination("jdbc:h2:mem:test;MODE=PostgreSQL;DB_CLOSE_DELAY=-1",
                                              "sa",
@@ -81,18 +72,26 @@ public class RecipesDaoImplTest {
     }
     
     @Test
-    public void test_正常にデータが1件ロードできる場合() {
-        RecipeEntity expected = new RecipeEntity(1,
-                                                 "チキンカレー",
-                                                 "45分",
-                                                 "4人",
-                                                 "玉ねぎ,肉,スパイス",
-                                                 1000,
-                                                 Timestamp.valueOf("2016-01-10 12:10:12"),
-                                                 Timestamp.valueOf("2016-01-10 12:10:12"));
-        RecipeEntity actual = dao.find(1);
+    public void test_正常にデータの登録ができる場合() {
+        RecipeEntity actual = dao.create(new RecipeEntity(null,
+                                                         "トマトスープ",
+                                                         "15分",
+                                                         "5人",
+                                                         "玉ねぎ, トマト, スパイス, 水",
+                                                         450,
+                                                         null,
+                                                         null));
         
-        assertThat(actual, is(expected));
+        assertThat(actual.getId(), is(3));
+        assertThat(actual.getTitle(), is("トマトスープ"));
+        assertThat(actual.getMakingTime(), is("15分"));
+        assertThat(actual.getServes(), is("5人"));
+        assertThat(actual.getIngredients(), is("玉ねぎ, トマト, スパイス, 水"));
+        assertThat(actual.getCost(), is(450));
+        assertThat(DateFormatUtils.format(actual.getCreatedAt(), "yyyy-MM-dd"),
+                   is(DateFormatUtils.format(new Date(), "yyyy-MM-dd")));
+        assertThat(DateFormatUtils.format(actual.getUpdatedAt(), "yyyy-MM-dd"),
+                   is(DateFormatUtils.format(new Date(), "yyyy-MM-dd")));
     }
     
     @Test
@@ -119,4 +118,20 @@ public class RecipesDaoImplTest {
         
         assertThat(actual, is(expected));
     }
+    
+    @Test
+    public void test_正常にデータが1件ロードできる場合() {
+        RecipeEntity expected = new RecipeEntity(1,
+                                                 "チキンカレー",
+                                                 "45分",
+                                                 "4人",
+                                                 "玉ねぎ,肉,スパイス",
+                                                 1000,
+                                                 Timestamp.valueOf("2016-01-10 12:10:12"),
+                                                 Timestamp.valueOf("2016-01-10 12:10:12"));
+        RecipeEntity actual = dao.find(1);
+        
+        assertThat(actual, is(expected));
+    }
+    
 }

@@ -10,6 +10,19 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 public final class TestUtils {
     
+    public static String readSql(String path) {
+        String result = null;
+        
+        try (FileInputStream input = new FileInputStream("src/main/resources/db/migration/" + path)) {
+            result = IOUtils.toString(input, "UTF-8");
+            
+        } catch (IOException e) {
+            //
+        }
+        
+        return result;
+    }
+    
     public static String readMessageFromFile(String path) throws IOException {
         String result = null;
         
@@ -20,13 +33,15 @@ public final class TestUtils {
         return result;
     }
     
-    private TestUtils() {
-        
-    }
     
     public static String marshall(Object obj) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         return mapper.writeValueAsString(obj);
     }
+    
+    private TestUtils() {
+        
+    }
+    
 }

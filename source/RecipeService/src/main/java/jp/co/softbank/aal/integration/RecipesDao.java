@@ -34,5 +34,5 @@ public interface RecipesDao {
      * @return 指定された ID に対応するレシピデータ
      * @throws SystemException データベースアクセスエラーが発生した場合
      */
-    RecipeEntity find(int id);
+    RecipeEntity find(Integer id);
 }
