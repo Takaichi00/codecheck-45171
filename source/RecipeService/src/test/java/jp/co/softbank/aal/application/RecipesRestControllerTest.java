@@ -50,6 +50,8 @@ public class RecipesRestControllerTest {
     
     @Test
     public void test_指定されたレシピを正常に削除できる場合() throws Exception {
+        when(service.deleteRecipe(1)).thenReturn(1);
+        
         DeleteRecipeResponsePayload expected
             = new DeleteRecipeResponsePayload("Recipe successfully removed!");
         

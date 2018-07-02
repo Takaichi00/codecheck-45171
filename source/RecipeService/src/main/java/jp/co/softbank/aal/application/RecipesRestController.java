@@ -51,6 +51,10 @@ public class RecipesRestController {
                     value = "{id}",
                     produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public DeleteRecipeResponsePayload deleteRecipe(@PathVariable("id") String id) {
+        int result = 0;
+        
+        result = service.deleteRecipe(NumberUtils.createInteger(id));
+        
         return new DeleteRecipeResponsePayload(DELETE_RECIPE_OK);
     }
     
@@ -117,7 +121,7 @@ public class RecipesRestController {
         Recipe recipe = null;
         
         try {
-            recipe = service.getRecipe(NumberUtils.toInt(id));
+            recipe = service.getRecipe(NumberUtils.createInteger(id));
             
         } catch (SystemException e) {
             throw new InternalServerException(e.getMessage());

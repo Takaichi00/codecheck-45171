@@ -20,6 +20,15 @@ public class RecipesManagementServiceImpl implements RecipesManagementService {
      * {@inheritDoc}
      */
     @Override
+    public int deleteRecipe(Integer id) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Recipe createRecipe(Recipe recipe) {
         RecipeEntity entity = dao.create(RecipeEntity.createInstance(recipe));
         return entity.createInstance();
@@ -45,7 +54,7 @@ public class RecipesManagementServiceImpl implements RecipesManagementService {
      * {@inheritDoc}
      */
     @Override
-    public Recipe getRecipe(int id) {
+    public Recipe getRecipe(Integer id) {
         RecipeEntity entity = dao.find(id);
         
         if (entity == null) {

@@ -8,6 +8,15 @@ import java.util.List;
 public interface RecipesManagementService {
     
     /**
+     * 指定された ID に対応するレシピを削除します。
+     * 
+     * @param id レシピを削除する ID
+     * @return 処理したレコードの件数
+     * @throws SystemException システムエラーが発生した場合
+     */
+    int deleteRecipe(Integer id);
+    
+    /**
      * 指定された情報でレシピを作成します。
      * 
      * @param recipe 作成するレシピの情報
@@ -35,6 +44,6 @@ public interface RecipesManagementService {
      * @return ID に対応するレシピ
      * @throws SystemException システムエラーが発生した場合
      */
-    Recipe getRecipe(int id);
+    Recipe getRecipe(Integer id);
     
 }
