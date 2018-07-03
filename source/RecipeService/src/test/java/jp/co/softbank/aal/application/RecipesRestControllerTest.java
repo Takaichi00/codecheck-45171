@@ -16,6 +16,8 @@ import jp.co.softbank.aal.application.payload.ErrorResponse;
 import jp.co.softbank.aal.application.payload.GetRecipeResponsePayload;
 import jp.co.softbank.aal.application.payload.GetRecipesResponsePayload;
 import jp.co.softbank.aal.application.payload.RecipePayload;
+import jp.co.softbank.aal.application.payload.UpdateRecipeRequestPayload;
+import jp.co.softbank.aal.application.payload.UpdateRecipeResponsePayload;
 import jp.co.softbank.aal.common.SystemException;
 import jp.co.softbank.aal.domain.Recipe;
 import jp.co.softbank.aal.domain.RecipesManagementService;
@@ -46,6 +48,32 @@ public class RecipesRestControllerTest {
     
     @After
     public void tearDown() throws Exception {
+    }
+    
+    @Test
+    public void test_指定されたレシピを正常に更新できる場合() throws Exception {
+        UpdateRecipeResponsePayload expected
+            = new UpdateRecipeResponsePayload("Recipe successfully updated!",
+                                              new RecipePayload(null,
+                                                                "トマトスープレシピ",
+                                                                "15分",
+                                                                "5人",
+                                                                "玉ねぎ, トマト, スパイス, 水",
+                                                               "450"));
+        
+        UpdateRecipeRequestPayload request
+            = new UpdateRecipeRequestPayload("トマトスープレシピ",
+                                             "15分",
+                                             "5人",
+                                             "玉ねぎ, トマト, スパイス, 水",
+                                             "450");
+        
+        mockMvc.perform(patch("/recipes/3")
+                       .content(marshall(request))
+                       .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().json(marshall(expected)));
     }
     
     @Test
@@ -118,8 +146,8 @@ public class RecipesRestControllerTest {
                                              "450");
         
         mockMvc.perform(post("/recipes")
-               .content(marshall(request))
-               .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                        .content(marshall(request))
+                        .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                .andExpect(status().isOk())
                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                .andExpect(content().json(marshall(expected)));
@@ -133,8 +161,8 @@ public class RecipesRestControllerTest {
                                                    "title, making_time, serves, ingredients, cost");
         
         mockMvc.perform(post("/recipes")
-               .content(marshall(request))
-               .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                       .content(marshall(request))
+                       .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                .andExpect(status().isBadRequest())
                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                .andExpect(content().json(marshall(expected)));
@@ -160,8 +188,8 @@ public class RecipesRestControllerTest {
                                              "450");
         
         mockMvc.perform(post("/recipes")
-               .content(marshall(request))
-               .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                       .content(marshall(request))
+                       .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                .andExpect(status().isInternalServerError())
                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                .andExpect(content().json(marshall(expected)));

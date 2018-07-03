@@ -20,6 +20,9 @@ public final class Constants {
     /** レシピの削除が成功した場合のメッセージ。 */
     public static final String DELETE_RECIPE_OK = "Recipe successfully removed!";
     
+    /** レシピの更新が成功した場合のメッセージ。 */
+    public static final String UPDATE_RECIPE_OK = "Recipe successfully updated!";
+    
     /** 登録に必要な必須フィールド。 */
     public static final String REQUIRED_FIELDS = "title, making_time, serves, ingredients, cost";
     

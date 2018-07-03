@@ -17,6 +17,8 @@ import jp.co.softbank.aal.application.payload.GetRecipesResponsePayload;
 import jp.co.softbank.aal.application.payload.InternalServerException;
 import jp.co.softbank.aal.application.payload.NotFoundException;
 import jp.co.softbank.aal.application.payload.RecipePayload;
+import jp.co.softbank.aal.application.payload.UpdateRecipeRequestPayload;
+import jp.co.softbank.aal.application.payload.UpdateRecipeResponsePayload;
 import jp.co.softbank.aal.common.SystemException;
 import jp.co.softbank.aal.domain.Recipe;
 import jp.co.softbank.aal.domain.RecipesManagementService;
@@ -40,6 +42,30 @@ public class RecipesRestController {
     
     @Autowired
     RecipesManagementService service;
+    
+    /**
+     * レシピを更新するエンドポイント。
+     * 
+     * @param request 更新するレシピのペイロード
+     * @return 作成結果のペイロード
+     */
+    @RequestMapping(method = RequestMethod.PATCH,
+                    value = "{id}",
+                    consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public UpdateRecipeResponsePayload updateRecipe(@PathVariable("id") String id,
+                                                    @RequestBody
+                                                    @Validated
+                                                    UpdateRecipeRequestPayload request,
+                                                    BindingResult bindingResult) {
+        return new UpdateRecipeResponsePayload("Recipe successfully updated!",
+                                               new RecipePayload(null,
+                                                                 "トマトスープレシピ",
+                                                                 "15分",
+                                                                 "5人",
+                                                                 "玉ねぎ, トマト, スパイス, 水",
+                                                                 "450"));
+    }
     
     /**
      * ID で指定されたレシピを削除するエンドポイント。

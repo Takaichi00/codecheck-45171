@@ -20,6 +20,15 @@ public class RecipesManagementServiceImpl implements RecipesManagementService {
      * {@inheritDoc}
      */
     @Override
+    public Recipe deleteRecipe(Recipe recipe) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int deleteRecipe(Integer id) {
         return dao.delete(id);
     }
