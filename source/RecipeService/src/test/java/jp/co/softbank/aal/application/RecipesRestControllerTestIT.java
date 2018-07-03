@@ -19,6 +19,9 @@ import jp.co.softbank.aal.application.payload.ErrorResponse;
 import jp.co.softbank.aal.application.payload.GetRecipeResponsePayload;
 import jp.co.softbank.aal.application.payload.GetRecipesResponsePayload;
 import jp.co.softbank.aal.application.payload.RecipePayload;
+import jp.co.softbank.aal.application.payload.UpdateRecipeRequestPayload;
+import jp.co.softbank.aal.application.payload.UpdateRecipeResponsePayload;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -28,8 +31,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
 
-@Ignore
+//@Ignore
 public class RecipesRestControllerTestIT {
     
     private static final Operation DROP_TABLE = sql(readSql("V101__drop_table.sql"));
@@ -74,6 +80,50 @@ public class RecipesRestControllerTestIT {
     
     @After
     public void tearDown() throws Exception {
+    }
+    
+    @Test
+    public void test_レシピの更新が正常に処理できる場合() throws Exception {
+        RequestEntity<UpdateRecipeRequestPayload> request = RequestEntity.patch(new URI("http://localhost:8080/recipes/2"))
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .body(new UpdateRecipeRequestPayload("チキンカレーレシピ",
+                                                     "45分",
+                                                     "4人",
+                                                     "玉ねぎ,肉,スパイス",
+                                                     "1000"));
+        ResponseEntity<UpdateRecipeResponsePayload> actual
+            = client.exchange(request, UpdateRecipeResponsePayload.class);
+        
+        UpdateRecipeResponsePayload expected
+            = new UpdateRecipeResponsePayload("Recipe successfully updated!",
+                                              new RecipePayload(null,
+                                                                "チキンカレーレシピ",
+                                                                "45分",
+                                                                "4人",
+                                                                "玉ねぎ,肉,スパイス",
+                                                                "1000"));
+        
+        assertThat(actual.getBody(), is(expected));
+        assertThat(actual.getStatusCode(), is(HttpStatus.OK));
+        assertThat(actual.getHeaders().getContentType(), is(MediaType.APPLICATION_JSON_UTF8));
+    }
+    
+    @Test
+    public void test_IDで指定されたレシピが更新できない場合() throws Exception {
+        RequestEntity<UpdateRecipeRequestPayload> request = RequestEntity.patch(new URI("http://localhost:8080/recipes/3"))
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .body(new UpdateRecipeRequestPayload("トマトスープレシピ",
+                                                     "15分",
+                                                     "5人",
+                                                     "玉ねぎ, トマト, スパイス, 水",
+                                                     "450"));
+        ResponseEntity<ErrorResponse> actual = client.exchange(request, ErrorResponse.class);
+        
+        ErrorResponse expected = new ErrorResponse("No Recipe found", null);
+        
+        assertThat(actual.getBody(), is(expected));
+        assertThat(actual.getStatusCode(), is(HttpStatus.NOT_FOUND));
+        assertThat(actual.getHeaders().getContentType(), is(MediaType.APPLICATION_JSON_UTF8));
     }
     
     @Test
@@ -178,4 +228,5 @@ public class RecipesRestControllerTestIT {
         assertThat(actual.getStatusCode(), is(HttpStatus.NOT_FOUND));
         assertThat(actual.getHeaders().getContentType(), is(MediaType.APPLICATION_JSON_UTF8));
     }
+    
 }

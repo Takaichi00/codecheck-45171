@@ -22,6 +22,11 @@ public class RecipesManagementServiceImpl implements RecipesManagementService {
     @Override
     public Recipe updateRecipe(Recipe recipe) {
         RecipeEntity entity = dao.update(RecipeEntity.createInstance(recipe));
+        
+        if (entity == null) {
+            return null;
+        }
+        
         return entity.createInstance();
     }
     

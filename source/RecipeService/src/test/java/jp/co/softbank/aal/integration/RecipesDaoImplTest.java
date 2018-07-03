@@ -71,7 +71,7 @@ public class RecipesDaoImplTest {
     }
     
     @Test
-    public void test_正常にデータの更新ができる場合() {
+    public void test_正常にデータの更新できる場合() {
         dao.create(new RecipeEntity(null,
                                     "トマトスープ",
                                     "15分",
@@ -101,6 +101,20 @@ public class RecipesDaoImplTest {
     }
     
     @Test
+    public void test_IDに対応するデータが存在せず更新できない場合() {
+        RecipeEntity actual = dao.update(new RecipeEntity(5,
+                                         "トマトスープレシピ",
+                                         "15分",
+                                         "5人",
+                                         "玉ねぎ, トマト, スパイス, 水",
+                                         450,
+                                         null,
+                                         null));
+        
+        assertThat(actual, is(nullValue()));
+    }
+    
+    @Test
     public void test_正常にデータが1件削除できる場合() {
         List<RecipeEntity> expected = new ArrayList<>();
         expected.add(new RecipeEntity(2,
@@ -117,6 +131,12 @@ public class RecipesDaoImplTest {
         
         List<RecipeEntity> actual = dao.findAll();
         assertThat(actual, is(expected));
+    }
+    
+    @Test
+    public void test_IDで指定したデータが存在せず削除できない場合() {
+        int executed = dao.delete(5);
+        assertThat(executed, is(0));
     }
     
     @Test
@@ -182,4 +202,9 @@ public class RecipesDaoImplTest {
         assertThat(actual, is(expected));
     }
     
+    @Test
+    public void test_IDで指定したデータが存在せずロードできない場合() {
+        RecipeEntity actual = dao.find(5);
+        assertThat(actual, is(nullValue()));
+    }
 }
