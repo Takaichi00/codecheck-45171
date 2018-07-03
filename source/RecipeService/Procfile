@@ -1,1 +1,1 @@
-web: java -jar -Dspring.profiles.active=pr build/libs/spring-boot-recipe-1.0.jar --server.port=$PORT --spring.datasource.url=${JDBC_DATABASE_URL}
+web: java -jar -Dspring.profiles.active=pr build/libs/spring-boot-recipe-1.0.jar --server.port=$PORT
