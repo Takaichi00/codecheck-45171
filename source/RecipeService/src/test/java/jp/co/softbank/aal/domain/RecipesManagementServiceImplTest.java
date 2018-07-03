@@ -40,6 +40,36 @@ public class RecipesManagementServiceImplTest {
     }
     
     @Test
+    public void test_レシピを正常に更新できる場合() {
+        when(dao.update(new RecipeEntity(3,
+                                         "トマトスープレシピ",
+                                         "15分",
+                                         "5人",
+                                         "玉ねぎ, トマト, スパイス, 水",
+                                         450,
+                                         null,
+                                         null)))
+            .thenReturn(new RecipeEntity(3,
+                                         "トマトスープレシピ",
+                                         "15分",
+                                         "5人",
+                                         "玉ねぎ, トマト, スパイス, 水",
+                                         450,
+                                         Timestamp.valueOf("2018-01-10 12:10:12"),
+                                         Timestamp.valueOf("2018-01-10 12:10:12")));
+        
+        Recipe actual = service.updateRecipe(new Recipe(3,
+                                                        "トマトスープレシピ",
+                                                        "15分",
+                                                        "5人",
+                                                        "玉ねぎ, トマト, スパイス, 水",
+                                                        450));
+        
+        Recipe expected = new Recipe(3, "トマトスープレシピ", "15分", "5人", "玉ねぎ, トマト, スパイス, 水", 450);
+        assertThat(actual, is(expected));
+    }
+    
+    @Test
     public void test_レシピを一つ正常に削除できる場合() {
         when(dao.delete(1)).thenReturn(1);
         

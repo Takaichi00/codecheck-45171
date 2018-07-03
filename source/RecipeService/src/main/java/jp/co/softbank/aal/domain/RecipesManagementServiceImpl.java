@@ -21,8 +21,8 @@ public class RecipesManagementServiceImpl implements RecipesManagementService {
      */
     @Override
     public Recipe updateRecipe(Recipe recipe) {
-        // TODO Auto-generated method stub
-        return null;
+        RecipeEntity entity = dao.update(RecipeEntity.createInstance(recipe));
+        return entity.createInstance();
     }
     
     /**

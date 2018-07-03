@@ -8,6 +8,17 @@ import java.util.List;
 public interface RecipesDao {
     
     /**
+     * 指定された情報でレシピデータを更新します。
+     * 
+     * <p>指定されたレシピデータが存在しない場合は null が戻されます。
+     * 
+     * @param entity 更新するレシピデータ
+     * @return 更新されたレシピデータ
+     * @throws SystemException データベースアクセスエラーが発生した場合
+     */
+    RecipeEntity update(RecipeEntity entity);
+    
+    /**
      * 指定された ID に対応するレシピデータを削除します。
      * 
      * @param id レシピデータを取得する ID

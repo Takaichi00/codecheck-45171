@@ -37,6 +37,15 @@ public class RecipesDaoImpl implements RecipesDao {
      * {@inheritDoc}
      */
     @Override
+    public RecipeEntity update(RecipeEntity entity) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int delete(Integer id) {
         int result = 0;
         

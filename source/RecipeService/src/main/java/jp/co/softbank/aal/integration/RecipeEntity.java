@@ -31,7 +31,7 @@ public class RecipeEntity {
      * @return {@link RecipeEntity} エンティティのインスタンス
      */
     public static RecipeEntity createInstance(Recipe recipe) {
-        return new RecipeEntity(null,
+        return new RecipeEntity(recipe.getId(),
                                 recipe.getTitle(),
                                 recipe.getMakingTime(),
                                 recipe.getServes(),
