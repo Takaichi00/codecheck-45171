@@ -35,7 +35,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
-//@Ignore
+@Ignore
 public class RecipesRestControllerTestIT {
     
     private static final Operation DROP_TABLE = sql(readSql("V101__drop_table.sql"));

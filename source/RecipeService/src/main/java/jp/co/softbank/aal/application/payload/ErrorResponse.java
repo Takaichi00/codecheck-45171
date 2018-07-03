@@ -28,7 +28,7 @@ public class ErrorResponse {
     public static ResponseEntity<ErrorResponse> createResponse(BadRequestException e) {
         return new ResponseEntity<ErrorResponse>(new ErrorResponse(e.getMessage(),
                                                                    e.getRequired()),
-                                                 HttpStatus.BAD_REQUEST);
+                                                 HttpStatus.OK);
     }
     
     /**

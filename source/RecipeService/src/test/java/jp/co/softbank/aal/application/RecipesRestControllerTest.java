@@ -99,7 +99,7 @@ public class RecipesRestControllerTest {
         mockMvc.perform(patch("/recipes/3")
                         .content(marshall(request))
                         .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-               .andExpect(status().isBadRequest())
+               .andExpect(status().isOk())
                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                .andExpect(content().json(marshall(expected)));
     }
@@ -191,7 +191,7 @@ public class RecipesRestControllerTest {
         mockMvc.perform(post("/recipes")
                         .content(marshall(request))
                         .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-               .andExpect(status().isBadRequest())
+               .andExpect(status().isOk())
                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                .andExpect(content().json(marshall(expected)));
     }
