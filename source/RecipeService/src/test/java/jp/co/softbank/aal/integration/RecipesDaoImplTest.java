@@ -12,7 +12,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -69,6 +68,36 @@ public class RecipesDaoImplTest {
     
     @After
     public void tearDown() throws Exception {
+    }
+    
+    @Test
+    public void test_正常にデータの更新ができる場合() {
+        dao.create(new RecipeEntity(null,
+                                    "トマトスープ",
+                                    "15分",
+                                    "5人",
+                                    "玉ねぎ, トマト, スパイス, 水",
+                                    450,
+                                    null,
+                                    null));
+        
+        RecipeEntity actual = dao.update(new RecipeEntity(3,
+                                         "トマトスープレシピ",
+                                         "15分",
+                                         "5人",
+                                         "玉ねぎ, トマト, スパイス, 水",
+                                         450,
+                                         null,
+                                         null));
+        
+        assertThat(actual.getId(), is(3));
+        assertThat(actual.getTitle(), is("トマトスープレシピ"));
+        assertThat(actual.getMakingTime(), is("15分"));
+        assertThat(actual.getServes(), is("5人"));
+        assertThat(actual.getIngredients(), is("玉ねぎ, トマト, スパイス, 水"));
+        assertThat(actual.getCost(), is(450));
+        assertThat(DateFormatUtils.format(actual.getUpdatedAt(), "yyyy-MM-dd"),
+                   is(DateFormatUtils.format(new Date(), "yyyy-MM-dd")));
     }
     
     @Test

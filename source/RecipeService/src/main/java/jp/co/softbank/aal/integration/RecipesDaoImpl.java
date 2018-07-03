@@ -22,6 +22,14 @@ public class RecipesDaoImpl implements RecipesDao {
     
     private static final Logger LOG = LoggerFactory.getLogger(RecipesDaoImpl.class);
     
+    private static final String UPDATE_RECIPE
+        = "update recipes set title = ?,"
+                          + " making_time = ?,"
+                          + " serves = ?,"
+                          + " ingredients = ?,"
+                          + " cost = ?,"
+                          + " updated_at = ?"
+                          + " where id = ?";
     private static final String DELETE_RECIPE = "delete from recipes where id = ?";
     private static final String CREATE_RECIPE
         = "insert into recipes(title, making_time , serves, ingredients, cost) "
@@ -37,9 +45,31 @@ public class RecipesDaoImpl implements RecipesDao {
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public RecipeEntity update(RecipeEntity entity) {
-        // TODO Auto-generated method stub
-        return null;
+        RecipeEntity result = null;
+        
+        try {
+            jdbcTemplate.update(UPDATE_RECIPE,
+                                entity.getTitle(),
+                                entity.getMakingTime(),
+                                entity.getServes(),
+                                entity.getIngredients(),
+                                entity.getCost(),
+                                new Timestamp(System.currentTimeMillis()),
+                                entity.getId());
+            result = find(entity.getId());
+            
+        } catch (EmptyResultDataAccessException e) {
+            LOG.info("recipe (id={}) is not found.", entity.getId());
+            
+        } catch (DataAccessException e) {
+            LOG.error("database access error is occurred.", e);
+            throw new SystemException("database access error is occurred.", e);
+            
+        }
+        
+        return result;
     }
     
     /**
