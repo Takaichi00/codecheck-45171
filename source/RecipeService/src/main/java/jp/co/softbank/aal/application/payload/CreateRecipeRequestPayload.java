@@ -42,6 +42,11 @@ public class CreateRecipeRequestPayload {
      * @return {@link Recipe} クラスのインスタンス
      */
     public Recipe createInstance() {
-        return new Recipe(null, title, makingTime, serves, ingredients, NumberUtils.toInt(cost));
+        return new Recipe(null,
+                          title,
+                          makingTime,
+                          serves,
+                          ingredients,
+                          NumberUtils.createInteger(cost));
     }
 }

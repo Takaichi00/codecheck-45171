@@ -20,7 +20,7 @@ public class RecipesManagementServiceImpl implements RecipesManagementService {
      * {@inheritDoc}
      */
     @Override
-    public Recipe deleteRecipe(Recipe recipe) {
+    public Recipe updateRecipe(Recipe recipe) {
         // TODO Auto-generated method stub
         return null;
     }

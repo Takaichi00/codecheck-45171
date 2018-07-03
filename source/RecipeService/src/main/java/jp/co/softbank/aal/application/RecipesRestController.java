@@ -6,6 +6,8 @@ import static jp.co.softbank.aal.common.Constants.DELETE_RECIPE_OK;
 import static jp.co.softbank.aal.common.Constants.GET_RECIPE_OK;
 import static jp.co.softbank.aal.common.Constants.RECIPE_NOT_FOUND;
 import static jp.co.softbank.aal.common.Constants.REQUIRED_FIELDS;
+import static jp.co.softbank.aal.common.Constants.UPDATE_RECIPE_NG;
+import static jp.co.softbank.aal.common.Constants.UPDATE_RECIPE_OK;
 
 import java.util.List;
 import jp.co.softbank.aal.application.payload.BadRequestException;
@@ -58,13 +60,15 @@ public class RecipesRestController {
                                                     @Validated
                                                     UpdateRecipeRequestPayload request,
                                                     BindingResult bindingResult) {
-        return new UpdateRecipeResponsePayload("Recipe successfully updated!",
-                                               new RecipePayload(null,
-                                                                 "トマトスープレシピ",
-                                                                 "15分",
-                                                                 "5人",
-                                                                 "玉ねぎ, トマト, スパイス, 水",
-                                                                 "450"));
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException(UPDATE_RECIPE_NG, REQUIRED_FIELDS);
+        }
+        
+        Recipe recipe = service.updateRecipe(request.createInstance(id));
+        
+        RecipePayload recipePayload = RecipePayload.createInstance(recipe);
+        recipePayload.setId(null);
+        return new UpdateRecipeResponsePayload(UPDATE_RECIPE_OK, recipePayload);
     }
     
     /**

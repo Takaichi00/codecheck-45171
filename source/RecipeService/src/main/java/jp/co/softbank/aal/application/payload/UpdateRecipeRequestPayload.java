@@ -39,9 +39,15 @@ public class UpdateRecipeRequestPayload {
     /**
      * このペイロードの情報を使用して、{@link Recipe} クラスのインスタンスを構築して、返します。
      * 
+     * @param id レシピの ID
      * @return {@link Recipe} クラスのインスタンス
      */
-    public Recipe createInstance() {
-        return new Recipe(null, title, makingTime, serves, ingredients, NumberUtils.toInt(cost));
+    public Recipe createInstance(String id) {
+        return new Recipe(NumberUtils.createInteger(id),
+                          title,
+                          makingTime,
+                          serves,
+                          ingredients,
+                          NumberUtils.createInteger(cost));
     }
 }

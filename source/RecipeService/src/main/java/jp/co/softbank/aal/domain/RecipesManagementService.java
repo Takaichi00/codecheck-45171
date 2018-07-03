@@ -14,7 +14,7 @@ public interface RecipesManagementService {
      * @return 作成が完了したレシピの情報
      * @throws SystemException システムエラーが発生した場合
      */
-    Recipe deleteRecipe(Recipe recipe);
+    Recipe updateRecipe(Recipe recipe);
     
     /**
      * 指定された ID に対応するレシピを削除します。

@@ -23,6 +23,9 @@ public final class Constants {
     /** レシピの更新が成功した場合のメッセージ。 */
     public static final String UPDATE_RECIPE_OK = "Recipe successfully updated!";
     
+    /** レシピの更新が失敗した場合のメッセージ。 */
+    public static final String UPDATE_RECIPE_NG = "Recipe update failed!";
+    
     /** 登録に必要な必須フィールド。 */
     public static final String REQUIRED_FIELDS = "title, making_time, serves, ingredients, cost";
     
